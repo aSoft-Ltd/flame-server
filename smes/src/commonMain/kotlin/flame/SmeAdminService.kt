@@ -1,5 +1,10 @@
 package flame
 
+import flame.admin.SmeBusinessDto
+import flame.admin.SmeContactsDto
+import flame.admin.SmeDirectorDto
+import flame.admin.SmeLegalComplianceDto
+import flame.admin.SmeShareholderDto
 import koncurrent.Later
 import sentinel.Sessioned
 

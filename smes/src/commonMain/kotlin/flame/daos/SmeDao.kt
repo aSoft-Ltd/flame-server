@@ -1,6 +1,7 @@
 package flame.daos
 
-import flame.SmeAdminDto
+import flame.admin.SmeAdminDto
+import flame.funding.SmeFundingDto
 import org.bson.codecs.pojo.annotations.BsonId
 import org.bson.types.ObjectId
 
@@ -8,5 +9,6 @@ data class SmeDao(
     @BsonId
     val uid: ObjectId? = null,
     val company: ObjectId,
-    val admin: SmeAdminDto? = null
+    val admin: SmeAdminDto? = null,
+    val funding: SmeFundingDto? = null,
 )
