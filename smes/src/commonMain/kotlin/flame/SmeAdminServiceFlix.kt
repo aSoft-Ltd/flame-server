@@ -35,4 +35,6 @@ class SmeAdminServiceFlix(private val options: SmeServiceOptions) : SmeAdminServ
     override fun saveLegal(params: Sessioned<SmeLegalComplianceDto>) = params.save(SmeKey.legal, SmeDao::admin, SmeAdminDto::legal)
 
     override fun saveShareholders(params: Sessioned<List<SmeShareholderDto>>) = params.save(SmeKey.shareholders, SmeDao::admin, SmeAdminDto::shareholders)
+
+    override fun saveDirectors(params: Sessioned<List<SmeDirectorDto>>) = params.save(SmeKey.directors, SmeDao::admin, SmeAdminDto::directors)
 }
