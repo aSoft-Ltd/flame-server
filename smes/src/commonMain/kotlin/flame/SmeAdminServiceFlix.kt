@@ -15,12 +15,12 @@ class SmeAdminServiceFlix(private val options: SmeServiceOptions) : SmeAdminServ
 
     private val logger by options.logger
 
-    private fun <T> Sessioned<T>.save(entity: String, vararg props: KProperty<*>): Later<SmeDto> = options.scope.later {
+    private fun <T> Sessioned<T>.save(key: SmeKey, vararg props: KProperty<*>): Later<SmeDto> = options.scope.later {
         val data = arrayOf(
             "user" to "${session.user.name} (${session.user.uid})",
             "company" to "${session.company.name} (${session.company.uid})",
         )
-        val tracer = logger.trace(options.message.save(entity), *data)
+        val tracer = logger.trace(options.message.save(key), *data)
         val qualifier = props.joinToString(".") { it.name }
         val matcher = Filters.eq(SmeDao::company.name, ObjectId(session.company.uid))
         val update = Updates.set(qualifier, params)
@@ -28,9 +28,11 @@ class SmeAdminServiceFlix(private val options: SmeServiceOptions) : SmeAdminServ
         options.col.find<SmeDao>(matcher).firstOrNull().toDto().also { tracer.passed() }
     }
 
-    override fun saveContacts(params: Sessioned<SmeContactsDto>) = params.save("contacts", SmeDao::admin, SmeAdminDto::contacts)
+    override fun saveContacts(params: Sessioned<SmeContactsDto>) = params.save(SmeKey.contacts, SmeDao::admin, SmeAdminDto::contacts)
 
-    override fun saveBusiness(params: Sessioned<SmeBusinessDto>) = params.save("business", SmeDao::admin, SmeAdminDto::business)
+    override fun saveBusiness(params: Sessioned<SmeBusinessDto>) = params.save(SmeKey.businesses, SmeDao::admin, SmeAdminDto::business)
 
-    override fun saveLegal(params: Sessioned<SmeLegalComplianceDto>) = params.save("legal", SmeDao::admin, SmeAdminDto::legal)
+    override fun saveLegal(params: Sessioned<SmeLegalComplianceDto>) = params.save(SmeKey.legal, SmeDao::admin, SmeAdminDto::legal)
+
+    override fun saveShareholders(params: Sessioned<List<SmeShareholderDto>>) = params.save(SmeKey.shareholders, SmeDao::admin, SmeAdminDto::shareholders)
 }

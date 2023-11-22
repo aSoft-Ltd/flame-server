@@ -9,4 +9,6 @@ interface SmeAdminService : SmeAdminScheme {
     fun saveBusiness(params: Sessioned<SmeBusinessDto>) : Later<SmeDto>
 
     fun saveLegal(params: Sessioned<SmeLegalComplianceDto>) : Later<SmeDto>
+
+    fun saveShareholders(params: Sessioned<List<SmeShareholderDto>>) : Later<SmeDto>
 }
