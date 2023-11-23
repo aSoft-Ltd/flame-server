@@ -16,6 +16,8 @@ class SmeServiceFlix(private val options: SmeServiceOptions) : SmeService {
     override val admin by lazy { SmeAdminServiceFlix(options) }
 
     override val funding by lazy { SmeFundingServiceFlix(options) }
+
+    override val finance by lazy { SmeFinanceServiceFlix(options) }
     override fun load(session: UserSession): Later<SmeDto> = options.scope.later {
         val trace = logger.trace(options.message.load())
         options.col.find<SmeDao>(eq(SmeDao::company.name, ObjectId(session.company.uid))).firstOrNull().toDto().also {

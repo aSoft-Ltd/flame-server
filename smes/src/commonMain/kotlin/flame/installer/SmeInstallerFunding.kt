@@ -14,7 +14,7 @@ import kotlinx.serialization.decodeFromString
 import sentinel.Sessioned
 import sentinel.bearerToken
 
-fun Routing.installSmeFunding(controller: SmeController) {
+internal fun Routing.installSmeFunding(controller: SmeController) {
     post(controller.routes.save(SmeKey.Funding.investment), controller.codec) {
         val params = controller.codec.decodeFromString<SmeInvestmentDto>(call.receiveText())
         controller.auth.session(token = bearerToken()).then {

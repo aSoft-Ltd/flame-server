@@ -27,4 +27,5 @@ fun Routing.installSme(controller: SmeController) {
     }
     installSmeAdmin(controller)
     installSmeFunding(controller)
+    installSmeFinance(controller)
 }

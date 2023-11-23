@@ -16,7 +16,7 @@ import kotlinx.serialization.decodeFromString
 import sentinel.Sessioned
 import sentinel.bearerToken
 
-fun Routing.installSmeAdmin(controller: SmeController) {
+internal fun Routing.installSmeAdmin(controller: SmeController) {
     post(controller.routes.save(SmeKey.Admin.contacts), controller.codec) {
         val params = controller.codec.decodeFromString<SmeContactsDto>(call.receiveText())
         controller.auth.session(token = bearerToken()).then {
