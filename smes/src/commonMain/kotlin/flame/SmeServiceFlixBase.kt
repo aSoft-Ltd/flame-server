@@ -2,12 +2,6 @@ package flame
 
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Updates
-import flame.admin.SmeAdminDto
-import flame.admin.SmeBusinessDto
-import flame.admin.SmeContactsDto
-import flame.admin.SmeDirectorDto
-import flame.admin.SmeLegalComplianceDto
-import flame.admin.SmeShareholderDto
 import flame.daos.SmeDao
 import flame.transformers.toDto
 import koncurrent.Later

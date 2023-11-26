@@ -7,6 +7,7 @@ import flame.admin.SmeDirectorDto
 import flame.admin.SmeLegalComplianceDto
 import flame.admin.SmeShareholderDto
 import flame.daos.SmeDao
+import flame.transformers.admin.toDao
 import koncurrent.Later
 import koncurrent.later
 import kotlin.reflect.KProperty
@@ -16,7 +17,7 @@ class SmeAdminServiceFlix(options: SmeServiceOptions) : SmeServiceFlixBase(optio
 
     private fun <T> Sessioned<T>.save(key: SmeKey, prop: KProperty<*>): Later<SmeDto> = save(key, SmeDao::admin, prop)
 
-    override fun saveContacts(params: Sessioned<SmeContactsDto>) = params.save(SmeKey.Admin.contacts, SmeAdminDto::contacts)
+    override fun saveContacts(params: Sessioned<SmeContactsDto>) = params.map { it.toDao() }.save(SmeKey.Admin.contacts, SmeAdminDto::contacts)
 
     override fun saveBusiness(params: Sessioned<SmeBusinessDto>) = params.save(SmeKey.Admin.businesses, SmeAdminDto::business)
 
