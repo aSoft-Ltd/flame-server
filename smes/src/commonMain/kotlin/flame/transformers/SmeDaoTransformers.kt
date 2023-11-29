@@ -15,6 +15,7 @@ internal fun SmeDao?.toDto() = SmeDto(
     admin = admin.toDto(),
     funding = funding,
     finance = finance,
+    documents = documents,
 )
 
 inline fun SmeDto.toDao() = SmeDao(
@@ -23,4 +24,5 @@ inline fun SmeDto.toDao() = SmeDao(
     admin = admin?.toDao() ?: SmeAdminDao(),
     funding = funding ?: SmeFundingDto(),
     finance = finance ?: SmeFinanceDto(),
+    documents = documents
 )

@@ -6,6 +6,6 @@ import sentinel.AuthenticationService
 class SmeController(
     val auth: AuthenticationService,
     val sme: SmeService,
-    val routes: SmeRoutes,
+    val routes: SmeEndpoint,
     val codec: StringFormat
 )
