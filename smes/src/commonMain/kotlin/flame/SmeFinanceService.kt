@@ -1,12 +1,12 @@
 package flame
 
 import flame.finance.SmeBackOfficeDto
-import flame.funding.SmeAcquisitionDto
-import flame.funding.SmeBreakdownDto
-import flame.funding.SmeInvestmentDto
+import flame.finance.SmeFinancialStatusDto
 import koncurrent.Later
 import sentinel.Sessioned
 
 interface SmeFinanceService {
     fun saveOffice(params: Sessioned<SmeBackOfficeDto>) : Later<SmeDto>
+
+    fun saveStatus(params: Sessioned<SmeFinancialStatusDto>) : Later<SmeDto>
 }
