@@ -3,6 +3,7 @@ package flame
 import flame.daos.SmeDao
 import flame.finance.SmeBackOfficeDto
 import flame.finance.SmeFinanceDto
+import flame.finance.SmeFinancialAcquisitionDto
 import flame.finance.SmeFinancialStatusDto
 import koncurrent.Later
 import kotlin.reflect.KProperty
@@ -15,4 +16,6 @@ class SmeFinanceServiceFlix(options: SmeServiceOptions) : SmeServiceFlixBase(opt
     override fun saveOffice(params: Sessioned<SmeBackOfficeDto>) = params.save(SmeKey.Finance.office, SmeFinanceDto::office)
 
     override fun saveStatus(params: Sessioned<SmeFinancialStatusDto>) = params.save(SmeKey.Finance.status, SmeFinanceDto::status)
+
+    override fun saveAcquisition(params: Sessioned<SmeFinancialAcquisitionDto>) = params.save(SmeKey.Finance.acquisition, SmeFinanceDto::acquisition)
 }

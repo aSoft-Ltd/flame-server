@@ -12,5 +12,9 @@ interface SmeService : SmeScheme {
     val finance: SmeFinanceService
 
     val document: SmeDocumentService
+
+    val governance: SmeGovernanceService
+
+    val swot: SmeSwotService
     fun load(session: UserSession) : Later<SmeDto>
 }

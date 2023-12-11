@@ -6,9 +6,9 @@ import flame.admin.SmeLegalComplianceDto
 import flame.admin.SmeShareholderDto
 
 data class SmeAdminDao(
-    val contacts: SmeContactsDao = SmeContactsDao(),
-    val business: SmeBusinessDto = SmeBusinessDto(),
-    val legal: SmeLegalComplianceDto = SmeLegalComplianceDto(),
-    val directors: List<SmeDirectorDto> = emptyList(),
-    val shareholders: List<SmeShareholderDto> = emptyList(),
+    val contacts: SmeContactsDao? = null,
+    val business: SmeBusinessDto? = null,
+    val legal: SmeLegalComplianceDto? = null,
+    val directors: List<SmeDirectorDto>? = null,
+    val shareholders: List<SmeShareholderDto>? = null,
 )

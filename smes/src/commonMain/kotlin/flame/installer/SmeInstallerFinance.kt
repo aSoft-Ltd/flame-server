@@ -3,6 +3,7 @@ package flame.installer
 import flame.SmeController
 import flame.SmeKey
 import flame.finance.SmeBackOfficeDto
+import flame.finance.SmeFinancialAcquisitionDto
 import flame.finance.SmeFinancialStatusDto
 import io.ktor.server.application.call
 import io.ktor.server.request.receiveText
@@ -29,6 +30,15 @@ internal fun Routing.installSmeFinance(controller: SmeController) {
             Sessioned(it, params)
         }.andThen {
             controller.sme.finance.saveStatus(it)
+        }.await()
+    }
+
+    post(controller.routes.save(SmeKey.Finance.acquisition), controller.codec) {
+        val params = controller.codec.decodeFromString<SmeFinancialAcquisitionDto>(call.receiveText())
+        controller.auth.session(token = bearerToken()).then {
+            Sessioned(it, params)
+        }.andThen {
+            controller.sme.finance.saveAcquisition(it)
         }.await()
     }
 }
