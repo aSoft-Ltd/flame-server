@@ -6,6 +6,11 @@ import flame.admin.SmeDirectorDto
 import flame.admin.SmeLegalComplianceDto
 import flame.admin.SmeShareholderDto
 import koncurrent.Later
+import koncurrent.later.then
+import koncurrent.later.andThen
+import koncurrent.later.andZip
+import koncurrent.later.zip
+import koncurrent.later.catch
 import sentinel.Sessioned
 
 interface SmeAdminService : SmeAdminScheme {

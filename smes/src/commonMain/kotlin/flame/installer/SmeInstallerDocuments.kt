@@ -22,6 +22,8 @@ import kase.response.get
 import kase.response.post
 import koncurrent.later.await
 import koncurrent.toLater
+import koncurrent.later.then
+import koncurrent.later.andThen
 import sentinel.Sessioned
 import sentinel.bearerToken
 import sentinel.exceptions.InvalidCredentialsAuthenticationException
