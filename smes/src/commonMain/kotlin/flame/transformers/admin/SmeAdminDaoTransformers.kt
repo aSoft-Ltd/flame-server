@@ -5,8 +5,7 @@ import flame.admin.SmeBusinessDto
 import flame.admin.SmeLegalComplianceDto
 import flame.daos.admin.SmeAdminDao
 import flame.daos.admin.SmeContactsDao
-import kollections.iEmptyList
-import kollections.toIList
+import kollections.emptyList
 
 fun SmeAdminDto.toDao() = SmeAdminDao(
     contacts = contacts?.toDao() ?: SmeContactsDao(),
@@ -20,6 +19,6 @@ fun SmeAdminDao.toDto() = SmeAdminDto(
     contacts = contacts?.toDto(),
     business = business,
     legal = legal,
-    directors = directors?.toIList() ?: iEmptyList(),
-    shareholders = shareholders?.toIList() ?: iEmptyList(),
+    directors = directors ?: emptyList(),
+    shareholders = shareholders ?: emptyList(),
 )
