@@ -24,4 +24,4 @@ listOf(
 
 rootProject.name = "flame-server"
 
-includeSubs("flame-sdk", ".", "smes")
+includeSubs("flame-services", "services", "smes")

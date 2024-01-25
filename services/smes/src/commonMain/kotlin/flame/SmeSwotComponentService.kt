@@ -1,0 +1,3 @@
+package flame
+
+interface SmeSwotComponentService : SmeSwotComponentScheme
