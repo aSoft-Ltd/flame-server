@@ -12,7 +12,7 @@ import flame.transformers.swot.toDto
 import org.bson.types.ObjectId
 
 internal fun SmeDao?.toDto() = SmeDto(
-    uid = this?.uid?.toHexString() ?: throw IllegalArgumentException("Can't transform an SME dao with a null id"),
+    uid = this?.uid?.toHexString() ?: throw IllegalArgumentException("Can't transform an SME dao with a null id to dto"),
     company = company.toHexString(),
     admin = admin?.toDto(),
     funding = funding,

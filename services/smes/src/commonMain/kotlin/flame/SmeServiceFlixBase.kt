@@ -31,6 +31,10 @@ abstract class SmeServiceFlixBase(protected val options: SmeServiceOptions) {
         val qualifier = props.joinToString(".") { it.name }
         val matcher = Filters.eq(SmeDao::company.name, ObjectId(session.company.uid))
         val update = Updates.set(qualifier, this@save)
+        val existing = options.col.find<SmeDao>(matcher).firstOrNull()
+        if (existing == null) {
+            options.col.insertOne(SmeDao(company = ObjectId(session.company.uid)))
+        }
         options.col.updateOne(matcher, update)
         options.col.find<SmeDao>(matcher).firstOrNull().toDto().also { tracer.passed() }
     }
