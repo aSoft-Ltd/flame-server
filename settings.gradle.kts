@@ -19,7 +19,8 @@ listOf(
     "cinematic", "keep", "lexi", "captain", "neat",
     "kash-api", "geo-api", "geo-client",
     "kronecker", "epsilon-api", "krono-core", "hormone", "identifier-api",
-    "kommerce", "kollections", "koncurrent", "kommander", "cabinet-api", "flame-core"
+    "kommerce", "kollections", "koncurrent", "kommander", "cabinet-api", "flame-core",
+    "sentinel-core", "sentinel-server"
 ).forEach { includeBuild("../$it") }
 
 rootProject.name = "flame-server"
