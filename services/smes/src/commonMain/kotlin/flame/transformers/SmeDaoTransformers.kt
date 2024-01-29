@@ -14,6 +14,7 @@ import org.bson.types.ObjectId
 internal fun SmeDao?.toDto() = SmeDto(
     uid = this?.uid?.toHexString() ?: throw IllegalArgumentException("Can't transform an SME dao with a null id to dto"),
     company = company.toHexString(),
+    origin = origin,
     admin = admin?.toDto(),
     funding = funding,
     finance = finance,
@@ -25,6 +26,7 @@ internal fun SmeDao?.toDto() = SmeDto(
 internal fun SmeDto.toDao() = SmeDao(
     uid = ObjectId(uid),
     company = ObjectId(company),
+    origin = origin,
     admin = admin?.toDao(),
     governance = governance,
     funding = funding,

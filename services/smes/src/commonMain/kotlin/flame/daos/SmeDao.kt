@@ -13,6 +13,7 @@ data class SmeDao(
     @BsonId
     val uid: ObjectId? = null,
     val company: ObjectId,
+    val origin: String = "picapital",
     val admin: SmeAdminDao? = null,
     val funding: SmeFundingDto? = null,
     val finance: SmeFinanceDto? = null,
