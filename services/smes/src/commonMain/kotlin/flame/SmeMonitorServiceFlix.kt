@@ -5,6 +5,7 @@ import flame.daos.SmeDao
 import flame.transformers.toDto
 import kollections.List
 import koncurrent.Later
+import koncurrent.TODOLater
 import koncurrent.later
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -19,8 +20,10 @@ class SmeMonitorServiceFlix(private val config: SmeServiceOptions) : SmeMonitorS
         }.toList()
     }
 
-    override fun load(uid: String): Later<SmeDto> = config.scope.later{
-        val dao = config.col.find<SmeDao>(eq("_id",ObjectId(uid))).first()
+    override fun load(uid: String): Later<SmeDto> = config.scope.later {
+        val dao = config.col.find<SmeDao>(eq(SmeDao::company.name, ObjectId(uid))).first()
         dao.toDto()
     }
+
+    override fun update(sme: SmeDto): Later<SmeDto> = TODOLater()
 }
