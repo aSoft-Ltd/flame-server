@@ -10,6 +10,7 @@ import io.ktor.http.content.forEachPart
 import io.ktor.http.content.streamProvider
 import io.ktor.server.application.call
 import io.ktor.server.plugins.origin
+import io.ktor.server.request.header
 import io.ktor.server.request.receiveMultipart
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondFile
@@ -20,6 +21,7 @@ import java.io.File
 import java.io.FileOutputStream
 import kase.response.post
 import koncurrent.later.await
+import koncurrent.later.then
 import sentinel.bearerToken
 import sentinel.exceptions.InvalidCredentialsAuthenticationException
 import sentinel.exceptions.MissingAuthenticationException
@@ -32,7 +34,8 @@ tailrec fun File.newTmpFile(attempt: Int = 0): File {
 
 internal fun Routing.installSmeDocuments(controller: SmeController) {
     post(controller.routes.documents(), controller.codec) {
-        val session = controller.auth.session(bearerToken()).await()
+        val scope = call.request.header(controller.resolver) ?: throw IllegalArgumentException("No scope provided")
+        val session = controller.auth(scope).session(bearerToken()).await()
         val documents = File("/app/root/buckets/companies/${session.company.uid}/documents").also { it.mkdirs() }
         val tmp = documents.newTmpFile()
         val multipart = call.receiveMultipart()
@@ -73,7 +76,8 @@ internal fun Routing.installSmeDocuments(controller: SmeController) {
 
     get(controller.routes.documents() + "/{company}/{name}") {
         try {
-            controller.auth.session(bearerToken()).await()
+            val scope = call.request.header(controller.resolver) ?: throw IllegalArgumentException("No scope provided")
+            controller.auth(scope).session(bearerToken()).await()
             val company: String by call.parameters
             val name: String by call.parameters
             val path = "/app/root/buckets/companies/${company}/documents/$name"

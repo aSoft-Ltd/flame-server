@@ -4,6 +4,7 @@ import flame.SmeController
 import flame.SmeKey
 import flame.SmeService
 import io.ktor.server.application.call
+import io.ktor.server.request.header
 import io.ktor.server.request.receiveText
 import io.ktor.server.routing.Routing
 import kase.response.post
@@ -17,7 +18,8 @@ import sentinel.bearerToken
 internal fun Routing.installSmeSwot(controller: SmeController) = SmeKey.Swot.entries.forEach { key ->
     post(controller.routes.save(key), controller.codec) {
         val params = controller.codec.decodeFromString<List<String>>(call.receiveText())
-        controller.auth.session(token = bearerToken()).then {
+        val scope = call.request.header(controller.resolver) ?: throw IllegalArgumentException("No scope provided")
+        controller.auth(scope).session(token = bearerToken()).then {
             controller.sme(it)
         }.andThen { service ->
             service(key).update(params)

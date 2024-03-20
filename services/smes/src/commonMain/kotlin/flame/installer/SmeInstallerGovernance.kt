@@ -4,6 +4,7 @@ import flame.SmeController
 import flame.SmeKey
 import flame.governance.SmeGovernanceDto
 import io.ktor.server.application.call
+import io.ktor.server.request.header
 import io.ktor.server.request.receiveText
 import io.ktor.server.routing.Routing
 import kase.response.post
@@ -16,7 +17,8 @@ import sentinel.bearerToken
 
 internal fun Routing.installSmeGovernance(controller: SmeController) = post(controller.routes.save(SmeKey.Governance), controller.codec) {
     val params = controller.codec.decodeFromString<SmeGovernanceDto>(call.receiveText())
-    controller.auth.session(token = bearerToken()).then {
+    val scope = call.request.header(controller.resolver) ?: throw IllegalArgumentException("No scope provided")
+    controller.auth(scope).session(token = bearerToken()).then {
         controller.sme(it)
     }.andThen { service ->
         service.governance.update(params)
