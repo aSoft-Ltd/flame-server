@@ -7,7 +7,7 @@ import kollections.List
 import koncurrent.Later
 import koncurrent.TODOLater
 import koncurrent.later
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kronecker.LoadOptions
@@ -21,7 +21,9 @@ class SmeMonitorServiceFlix(private val config: SmeServiceOptions) : SmeMonitorS
     }
 
     override fun load(uid: String): Later<SmeDto> = config.scope.later {
-        val dao = config.col.find<SmeDao>(eq(SmeDao::company.name, ObjectId(uid))).first()
+        val dao = config.col.find<SmeDao>(eq(SmeDao::uid.name, ObjectId(uid))).firstOrNull() ?: run {
+            throw IllegalArgumentException("Sme(uid = $uid) does not exist")
+        }
         dao.toDto()
     }
 
