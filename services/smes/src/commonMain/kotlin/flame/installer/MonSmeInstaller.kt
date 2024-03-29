@@ -16,7 +16,7 @@ import kotlinx.serialization.decodeFromString
 import sentinel.bearerToken
 
 fun Routing.installMonSme(controller: MonSmeController) {
-    get(controller.routes.load(),controller.codec) {
+    get(controller.routes.list(),controller.codec) {
         controller.auth.session(token = bearerToken()).andThen {
             controller.sme(it).list()
         }.await()

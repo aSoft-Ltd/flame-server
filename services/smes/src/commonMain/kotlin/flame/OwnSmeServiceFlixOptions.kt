@@ -6,10 +6,11 @@ import kotlinx.coroutines.CoroutineScope
 import lexi.LoggerFactory
 import sentinel.UserSession
 
-class SmeServiceFlixOptions(
+class OwnSmeServiceFlixOptions(
     val client: MongoClient,
     val session: UserSession,
     val logger: LoggerFactory,
+    val message: OwnSmeReference,
     val scope: CoroutineScope
 ) {
     internal val db by lazy {

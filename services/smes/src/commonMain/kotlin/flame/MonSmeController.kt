@@ -8,6 +8,6 @@ class MonSmeController(
     val auth: EmailAuthenticationService,
     val sme: (UserSession) -> MonSmeScheme,
     val resolver: String,
-    val routes: SmeEndpoint,
+    val routes: MonSmeReference,
     val codec: StringFormat
 )

@@ -8,6 +8,6 @@ class OwnSmeController(
     val auth: suspend (domain: String) -> EmailAuthenticationService,
     val sme: (UserSession) -> OwnSmeScheme,
     val resolver: String,
-    val routes: SmeEndpoint,
+    val routes: OwnSmeReference,
     val codec: StringFormat,
 )

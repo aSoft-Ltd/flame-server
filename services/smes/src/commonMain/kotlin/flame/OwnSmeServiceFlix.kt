@@ -10,23 +10,27 @@ import kotlinx.coroutines.flow.firstOrNull
 import org.bson.types.ObjectId
 
 class OwnSmeServiceFlix(
-    private val options: SmeServiceFlixOptions
+    private val options: OwnSmeServiceFlixOptions
 ) : OwnSmeScheme {
 
     private val scope = options.scope
     private val col = options.col
+    private val message = options.message
+    private val logger by options.logger
 
     override fun load(): Later<SmeDto> = scope.later {
+        val tracer = logger.trace(message.load())
         val uid = options.session.company.uid
         val dao = col.find<SmeDao>(Filters.eq(SmeDao::company.name, ObjectId(uid))).firstOrNull() ?: run {
-            throw IllegalArgumentException("Sme(uid = $uid) does not exist")
+            throw IllegalArgumentException("Sme(uid = $uid) does not exist").also { tracer.failed(it) }
         }
-        dao.toDto()
+        dao.toDto().also { tracer.passed() }
     }
 
     override fun update(sme: SmeDto): Later<SmeDto> = scope.later {
+        val tracer = logger.trace(message.update())
         col.deleteOne(Filters.eq(SmeDao::uid.name, ObjectId(sme.uid)))
         col.insertOne(sme.toDao())
-        sme
+        sme.also { tracer.passed() }
     }
 }
