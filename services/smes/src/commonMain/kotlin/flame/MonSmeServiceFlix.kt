@@ -16,7 +16,7 @@ import kronecker.LoadOptions
 import org.bson.types.ObjectId
 
 class MonSmeServiceFlix(
-    private val options: SmeServiceFlixOptions
+    private val options: SmeServiceFlixOptions,
 ) : MonSmeScheme {
 
     private val scope = options.scope
@@ -38,7 +38,7 @@ class MonSmeServiceFlix(
     }
 
     override fun load(uid: String): Later<SmeDto> = scope.later {
-        val dao = col.find<SmeDao>(Filters.eq(SmeDao::uid.name, ObjectId(uid))).firstOrNull() ?: run {
+        val dao = col.find<SmeDao>(Filters.eq("_id", ObjectId(uid))).firstOrNull() ?: run {
             throw IllegalArgumentException("Sme(uid = $uid) does not exist")
         }
         dao.toDto()
