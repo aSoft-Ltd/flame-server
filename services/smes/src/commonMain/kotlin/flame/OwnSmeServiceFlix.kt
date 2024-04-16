@@ -6,7 +6,6 @@ import flame.transformers.toDao
 import flame.transformers.toDto
 import koncurrent.Later
 import koncurrent.later
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
 import org.bson.types.ObjectId
 
@@ -15,7 +14,7 @@ class OwnSmeServiceFlix(
 ) : OwnSmeScheme {
 
     private val scope = options.scope
-    private val col = options.col
+    private val col = options.collection
     private val message = options.message
     private val logger by options.logger
 
