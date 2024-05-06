@@ -16,27 +16,27 @@ import kotlinx.serialization.decodeFromString
 import sentinel.bearerToken
 
 fun Routing.installMonSme(controller: MonSmeController) {
-    get(controller.routes.list(),controller.codec) {
+    get(controller.routes.list(), controller.codec) {
         controller.auth.session(token = bearerToken()).andThen {
             controller.sme(it).list()
         }.await()
     }
 
     get(controller.routes.load("{uid}"), controller.codec) {
-        val uid : String by call.parameters
+        val uid: String by call.parameters
         controller.auth.session(token = bearerToken()).andThen {
             controller.sme(it).load(uid)
         }.await()
     }
 
-    post(controller.routes.create(),controller.codec) {
+    post(controller.routes.create(), controller.codec) {
         val params = controller.codec.decodeFromString<SmeBusinessDto>(call.receiveText())
         controller.auth.session(token = bearerToken()).andThen {
             controller.sme(it).create(params)
         }.await()
     }
 
-    patch(controller.routes.update(),controller.codec) {
+    patch(controller.routes.update(), controller.codec) {
         val params = controller.codec.decodeFromString<SmeDto>(call.receiveText())
         controller.auth.session(token = bearerToken()).andThen {
             controller.sme(it).update(params)
