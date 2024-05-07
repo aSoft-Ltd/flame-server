@@ -2,10 +2,15 @@
 
 package flame.installer
 
+import epsilon.MemorySize
+import epsilon.MemoryUnit
+import epsilon.Multiplier
 import io.ktor.http.content.MultiPartData
 import io.ktor.http.content.PartData
 import io.ktor.http.content.forEachPart
 import io.ktor.http.content.streamProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
@@ -22,16 +27,26 @@ class FileReceiver(directory: String) {
         return newTmpFile(attempt + 1)
     }
 
-    suspend fun receive(name: String, multipart: MultiPartData): File {
+    class Received(
+        val file: File,
+        val size: MemorySize
+    )
+
+    suspend fun receive(name: String, multipart: MultiPartData): Received {
         val tmp = base.newTmpFile()
         val params = mutableMapOf<String, String>()
+        var bytes = 0.0
         multipart.forEachPart { part ->
             when (part) {
                 is PartData.FormItem -> params["${part.name}"] = part.value
-                is PartData.FileItem -> {
+                is PartData.FileItem -> withContext(Dispatchers.IO) {
                     val provider = part.streamProvider()
                     val os = FileOutputStream(tmp)
-                    provider.transferTo(os)
+                    while (provider.available() > 0) {
+                        bytes++
+                        os.write(provider.read())
+                    }
+//                    provider.transferTo(os)
                     os.flush()
                     os.close()
                 }
@@ -42,6 +57,6 @@ class FileReceiver(directory: String) {
         }
         val dst = File(tmp.parent, name)
         tmp.renameTo(dst)
-        return dst
+        return Received(dst, MemorySize(bytes, Multiplier.Unit, MemoryUnit.Bytes))
     }
 }
