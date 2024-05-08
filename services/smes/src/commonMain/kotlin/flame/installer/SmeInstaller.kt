@@ -33,7 +33,12 @@ fun Routing.installSme(controller: OwnSmeController) {
                     "${controller.directory}/$supervisor/smes/$company/documents/$name"
                 }
             }
-            call.respondFile(File(path))
+            val file = File(path)
+            if(file.exists()) {
+                call.respondFile(file)
+            } else {
+                call.respond(HttpStatusCode.NotFound, "File not found")
+            }
         } catch (err: MissingAuthenticationException) {
             call.respond(HttpStatusCode.Unauthorized, err.message)
         } catch (err: Throwable) {

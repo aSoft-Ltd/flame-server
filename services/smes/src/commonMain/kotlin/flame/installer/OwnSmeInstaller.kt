@@ -1,6 +1,6 @@
 package flame.installer
 
-import cabinet.Attachment
+import cabinet.AttachmentDto
 import flame.OwnSmeController
 import flame.SmeDto
 import io.ktor.server.application.call
@@ -50,10 +50,10 @@ fun Routing.installOwnSme(controller: OwnSmeController) {
             else -> ":$p"
         }
         val url = "${call.request.origin.scheme}://${call.request.origin.serverHost}$port/$coordinates/$name"
-        val attachment = Attachment(uid = name, name = name, url = url, sizeInBytes = received.size.inBytes().toInt())
+        val attachment = AttachmentDto(uid = name, name = name, url = url, size = received.size)
         val service = controller.sme(session)
         service.load().andThen { sme ->
-            val documents = sme.documents.filter { it.name != name }
+            val documents = sme.documents.filter { !it.name.contains(name.substringBeforeLast(".")) }
             service.update(sme.copy(documents = documents + attachment))
         }.then {
             attachment

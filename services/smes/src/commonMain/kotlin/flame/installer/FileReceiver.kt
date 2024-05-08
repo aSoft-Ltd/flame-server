@@ -42,11 +42,11 @@ class FileReceiver(directory: String) {
                 is PartData.FileItem -> withContext(Dispatchers.IO) {
                     val provider = part.streamProvider()
                     val os = FileOutputStream(tmp)
-                    while (provider.available() > 0) {
-                        bytes++
-                        os.write(provider.read())
+                    provider.readBytes().let {
+                        bytes += it.size.toDouble()
+                        os.write(it)
                     }
-//                    provider.transferTo(os)
+                    provider.close()
                     os.flush()
                     os.close()
                 }

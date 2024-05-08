@@ -1,6 +1,6 @@
 package flame.daos
 
-import cabinet.Attachment
+import cabinet.AttachmentDto
 import flame.daos.admin.SmeAdminDao
 import flame.daos.swot.SmeSwotDao
 import flame.finance.SmeFinanceDto
@@ -17,7 +17,7 @@ data class SmeDao(
     val admin: SmeAdminDao? = null,
     val funding: SmeFundingDto? = null,
     val finance: SmeFinanceDto? = null,
-    val documents: List<Attachment> = emptyList(),
+    val documents: List<AttachmentDto> = emptyList(),
     val governance: SmeGovernanceDto? = null,
     val swot: SmeSwotDao? = null
 )
