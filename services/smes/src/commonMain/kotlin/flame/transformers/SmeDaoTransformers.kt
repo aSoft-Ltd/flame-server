@@ -2,9 +2,7 @@ package flame.transformers
 
 import flame.SmeDto
 import flame.daos.SmeDao
-import flame.daos.admin.SmeAdminDao
-import flame.finance.SmeFinanceDto
-import flame.funding.SmeFundingDto
+import flame.plan.SmePlanDto
 import flame.transformers.admin.toDao
 import flame.transformers.admin.toDto
 import flame.transformers.swot.toDao
@@ -20,6 +18,7 @@ fun SmeDao?.toDto() = SmeDto(
     finance = finance,
     governance = governance,
     documents = documents,
+    business = business ?: SmePlanDto(),
     swot = swot?.toDto()
 )
 
@@ -32,5 +31,6 @@ internal fun SmeDto.toDao() = SmeDao(
     funding = funding,
     finance = finance,
     documents = documents,
+    business = business,
     swot = swot?.toDao()
 )
