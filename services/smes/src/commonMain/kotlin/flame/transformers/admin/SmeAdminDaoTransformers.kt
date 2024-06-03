@@ -11,7 +11,6 @@ fun SmeAdminDto.toDao() = SmeAdminDao(
     contacts = contacts?.toDao() ?: SmeContactsDao(),
     business = business ?: SmeBusinessDto(),
     legal = legal ?: SmeLegalComplianceDto(),
-    directors = directors,
     shareholders = shareholders,
 )
 
@@ -19,6 +18,5 @@ fun SmeAdminDao.toDto() = SmeAdminDto(
     contacts = contacts?.toDto(),
     business = business,
     legal = legal,
-    directors = directors ?: emptyList(),
     shareholders = shareholders ?: emptyList(),
 )
