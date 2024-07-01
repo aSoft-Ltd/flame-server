@@ -19,7 +19,8 @@ fun SmeDao?.toDto() = SmeDto(
     governance = governance,
     documents = documents,
     business = business ?: SmePlanDto(),
-    swot = swot?.toDto()
+    swot = swot?.toDto(),
+    reports = reports?.map { it.toDto() } ?: emptyList()
 )
 
 internal fun SmeDto.toDao() = SmeDao(
@@ -32,5 +33,6 @@ internal fun SmeDto.toDao() = SmeDao(
     finance = finance,
     documents = documents,
     business = business,
-    swot = swot?.toDao()
+    swot = swot?.toDao(),
+    reports = reports.map { it.toDao() }
 )
