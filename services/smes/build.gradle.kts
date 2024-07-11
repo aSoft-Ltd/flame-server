@@ -25,6 +25,8 @@ kotlin {
                 api(libs.sentinel.controllers.enterprise.authentication.email)?.because(
                     "We need to access bearer token to make sure that only authenticated individuals have access to the sme service"
                 )
+                api("org.apache.poi:poi:5.2.5")
+                api("org.apache.poi:poi-ooxml:5.2.5")
             }
         }
 

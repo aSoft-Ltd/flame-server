@@ -45,6 +45,7 @@ fun Routing.installOwnSme(controller: OwnSmeController) {
         val receiver = FileReceiver("${controller.directory}/$coordinates")
 
         val received = receiver.receive(name, call.receiveMultipart())
+
         val port = when (val p = call.request.origin.serverPort) {
             80 -> ""
             else -> ":$p"
@@ -55,6 +56,34 @@ fun Routing.installOwnSme(controller: OwnSmeController) {
         service.load().andThen { sme ->
             val documents = sme.documents.filter { !it.name.contains(name.substringBeforeLast(".")) }
             service.update(sme.copy(documents = documents + attachment))
+        }.then {
+            attachment
+        }.await()
+    }
+
+    post(controller.routes.xlsx("{name}"), controller.codec) {
+        val scope = call.request.header(controller.resolver) ?: throw IllegalArgumentException("No scope provided")
+        val supervisor = controller.supervisor(scope)
+        val name: String by call.parameters
+        val session = controller.auth(scope).session(bearerToken()).await()
+
+        val coordinates = "${supervisor}/smes/${session.company.uid}/xlsx"
+        val receiver = FileReceiver("${controller.directory}/$coordinates")
+
+        val received = receiver.receive(name, call.receiveMultipart())
+
+        val sheet = SheetProducer(received.file).produce()
+
+        val port = when (val p = call.request.origin.serverPort) {
+            80 -> ""
+            else -> ":$p"
+        }
+        val url = "${call.request.origin.scheme}://${call.request.origin.serverHost}$port/$coordinates/$name"
+        val attachment = AttachmentDto(uid = name, name = name, url = url, size = received.size.toBestSize())
+        val service = controller.sme(session)
+        service.load().andThen { sme ->
+//            val documents = sme.documents.filter { !it.name.contains(name.substringBeforeLast(".")) }
+            service.update(sme.copy(xlsx = attachment, sheet = sheet))
         }.then {
             attachment
         }.await()
