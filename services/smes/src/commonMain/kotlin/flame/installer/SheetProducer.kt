@@ -8,6 +8,7 @@ import flame.sheet.SmeSheetRow
 import kollections.List
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.Font
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -110,8 +111,22 @@ class SheetProducer(val file: File) {
     }
 
     private fun Cell.toCell(font:Font?):SmeSheetCell {
+        val cellValue = this.cellType?.let {
+            when (it) {
+                CellType._NONE -> ""
+                CellType.NUMERIC -> "${this.numericCellValue}"
+                CellType.STRING -> this.stringCellValue
+                CellType.FORMULA -> "</>"
+                CellType.BLANK -> ""
+                CellType.BOOLEAN -> when (this.booleanCellValue) {
+                    true -> "true"
+                    false -> "false"
+                }
+                CellType.ERROR -> "Error"
+            }
+        }
         return SmeSheetCell(
-            content = this.stringCellValue,
+            content = cellValue ?: "",
             bold = font?.bold ?: false,
             indent = false
         )
