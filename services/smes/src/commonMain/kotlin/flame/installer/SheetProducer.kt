@@ -5,12 +5,12 @@ package flame.installer
 import flame.sheet.SmeSheet
 import flame.sheet.SmeSheetCell
 import flame.sheet.SmeSheetRow
-import kollections.List
 import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.Font
 import org.apache.poi.ss.usermodel.Workbook
+import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileInputStream
@@ -53,9 +53,11 @@ class SheetProducer(val file: File) {
 
                         } else {
                             if (merge != null) {
+
+
                                 doneMerges.add(merge.formatAsString());
                             }
-                            cells.add(c, cell.toCell(font))
+                            cells.add(c, cell.toCell(font, merge))
                             c++
                         }
                     }
@@ -110,7 +112,8 @@ class SheetProducer(val file: File) {
         return workbook
     }
 
-    private fun Cell.toCell(font:Font?):SmeSheetCell {
+    private fun Cell.toCell(font:Font?, merge:CellRangeAddress?):SmeSheetCell {
+
         val cellValue = this.cellType?.let {
             when (it) {
                 CellType._NONE -> ""
@@ -125,10 +128,17 @@ class SheetProducer(val file: File) {
                 CellType.ERROR -> "Error"
             }
         }
+
         return SmeSheetCell(
             content = cellValue ?: "",
             bold = font?.bold ?: false,
-            indent = false
+            indent = false,
+            colspan = merge?.let { merge->
+                merge.lastRow - merge.firstRow + 1
+            } ?: 1,
+            rowspan = merge?.let {
+                merge.lastColumn - merge.firstColumn + 1
+            } ?: 1,
         )
     }
 }
