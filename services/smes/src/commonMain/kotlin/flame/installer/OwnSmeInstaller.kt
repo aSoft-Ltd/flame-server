@@ -71,7 +71,7 @@ fun Routing.installOwnSme(controller: OwnSmeController) {
                 80 -> ""
                 else -> ":$p"
             }
-            val url = "${call.request.origin.scheme}://${call.request.origin.serverHost}$port/$coordinates/$filename"
+            val url = "https://${call.request.origin.serverHost}$port/$coordinates/$filename"
             val attachment = AttachmentDto(uid = name, name = filename, url = url, size = received.size.toBestSize())
             val service = controller.sme(session)
             service.load().andThen { sme ->
@@ -106,7 +106,7 @@ fun Routing.installOwnSme(controller: OwnSmeController) {
                 80 -> ""
                 else -> ":$p"
             }
-            val url = "${call.request.origin.scheme}://${call.request.origin.serverHost}$port/$coordinates/$filename"
+            val url = "https://${call.request.origin.serverHost}$port/$coordinates/$filename"
             val attachment = AttachmentDto(uid = name, name = filename, url = url, size = received.size.toBestSize())
             val service = controller.sme(session)
             service.load().andThen { sme ->
