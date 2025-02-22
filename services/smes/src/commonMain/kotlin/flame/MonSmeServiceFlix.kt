@@ -21,6 +21,7 @@ class MonSmeServiceFlix(
 
     private val scope = options.scope
     private val col = options.col
+    private val session = options.session
 
     override fun create(params: SmeBusinessDto): Later<SmeDto> = scope.later {
         val dao = SmeDao(
@@ -32,7 +33,9 @@ class MonSmeServiceFlix(
     }
 
     override fun list(options: LoadOptions): Later<List<SmeDto>> = scope.later {
-        col.find<SmeDao>().skip((options.page - 1) * options.limit).limit(options.limit).map {
+        val company = ObjectId(session.company.uid)
+//        val applications = applications.find(Filters.eq(SmeDao::scope.name, company)).skip(ignore).limit(options.limit).toList()
+        col.find<SmeDao>(Filters.eq(SmeDao::company.name, company)).skip((options.page - 1) * options.limit).limit(options.limit).map {
             it.toDto()
         }.toList()
     }

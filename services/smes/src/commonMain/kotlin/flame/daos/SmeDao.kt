@@ -17,6 +17,7 @@ data class SmeDao(
     val uid: ObjectId? = null,
     val company: ObjectId,
     val origin: String = "picapital",
+//    val monitor: ObjectId,
     val admin: SmeAdminDao? = null,
     val funding: SmeFundingDto? = null,
     val finance: SmeFinanceDto? = null,
