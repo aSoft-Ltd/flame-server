@@ -35,7 +35,11 @@ class MonSmeServiceFlix(
     override fun list(options: LoadOptions): Later<List<SmeDto>> = scope.later {
         val company = ObjectId(session.company.uid)
 //        val applications = applications.find(Filters.eq(SmeDao::scope.name, company)).skip(ignore).limit(options.limit).toList()
-        col.find<SmeDao>(Filters.eq(SmeDao::company.name, company)).skip((options.page - 1) * options.limit).limit(options.limit).map {
+//        col.find<SmeDao>(Filters.eq(SmeDao::company.name, company)).skip((options.page - 1) * options.limit).limit(options.limit).map {
+//            it.toDto()
+//        }.toList()
+
+        col.find<SmeDao>().skip((options.page - 1) * options.limit).limit(options.limit).map {
             it.toDto()
         }.toList()
     }
